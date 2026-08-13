@@ -4,141 +4,405 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Luxolo Ndima — Full Stack Developer</title>
-<meta name="description" content="Portfolio of Luxolo Ndima, Full Stack Developer (MERN) in Cape Town, South Africa.">
+<meta name="description" content="Portfolio of Luxolo Ndima, Full Stack Developer (MERN) in Cape Town, South Africa. React, Node.js, TypeScript, SQL, Docker & Kubernetes.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2338bdf8'/%3E%3Cstop offset='.55' stop-color='%23818cf8'/%3E%3Cstop offset='1' stop-color='%23f472b6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-size='30' font-weight='700' text-anchor='middle' fill='%2304121f'%3ELN%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0f172a; --card:#1e293b; --text:#e2e8f0; --muted:#94a3b8;
-    --accent:#38bdf8; --border:#334155;
+    --bg:#060913;
+    --bg-soft:#0a1020;
+    --panel:rgba(255,255,255,.035);
+    --panel-hover:rgba(255,255,255,.06);
+    --border:rgba(255,255,255,.09);
+    --text:#e7edff;
+    --muted:#97a3c2;
+    --cyan:#38bdf8;
+    --violet:#818cf8;
+    --pink:#f472b6;
+    --grad:linear-gradient(90deg,#38bdf8,#818cf8 55%,#f472b6);
+    --radius:16px;
+    --font-body:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+    --font-head:'Space Grotesk','Inter',system-ui,sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
-  .wrap{max-width:900px;margin:0 auto;padding:2rem 1.5rem}
-  header{text-align:center;padding:3rem 0 1.5rem;border-bottom:1px solid var(--border)}
-  header h1{font-size:2.2rem;letter-spacing:-.5px}
-  header .role{color:var(--accent);font-weight:600;margin:.3rem 0}
-  header .meta{color:var(--muted);font-size:.95rem}
-  header .meta a{color:var(--accent);text-decoration:none}
-  h2{font-size:1.3rem;margin:2rem 0 1rem;color:var(--accent);border-left:3px solid var(--accent);padding-left:.6rem}
-  .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.1rem 1.2rem;margin-bottom:.9rem}
-  .card h3{font-size:1.05rem}
-  .card .sub{color:var(--muted);font-size:.88rem;margin-bottom:.5rem}
-  ul{padding-left:1.2rem;color:var(--text)}
-  ul li{margin-bottom:.25rem}
-  .skills{display:flex;flex-wrap:wrap;gap:.45rem}
-  .skills span{background:#0b1220;border:1px solid var(--border);border-radius:999px;padding:.25rem .7rem;font-size:.85rem}
-  .contact-cta{text-align:center;margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--border);color:var(--muted)}
-  .contact-cta a{color:var(--accent)}
-  @media(max-width:600px){header h1{font-size:1.7rem}}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--font-body);background:var(--bg);color:var(--text);line-height:1.65;
+    overflow-x:hidden;
+  }
+  ::selection{background:rgba(56,189,248,.3)}
+  a{color:var(--cyan);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* ambient background */
+  .bg-grid{
+    position:fixed;inset:0;z-index:-2;pointer-events:none;
+    background:
+      radial-gradient(900px 500px at 15% -10%,rgba(56,189,248,.14),transparent 60%),
+      radial-gradient(900px 500px at 85% 0%,rgba(129,140,248,.13),transparent 60%),
+      radial-gradient(700px 500px at 50% 110%,rgba(244,114,182,.08),transparent 60%);
+  }
+  .bg-grid::after{
+    content:"";position:absolute;inset:0;
+    background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+                     linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+    background-size:56px 56px;
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000 30%,transparent 75%);
+    -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000 30%,transparent 75%);
+  }
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 1.5rem}
+
+  /* nav */
+  nav{
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    background:rgba(6,9,19,.72);border-bottom:1px solid var(--border);
+  }
+  nav .inner{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .logo{font-family:var(--font-head);font-weight:700;font-size:1.15rem;letter-spacing:-.3px}
+  .logo span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .nav-links{display:flex;gap:1.6rem;align-items:center}
+  .nav-links a{color:var(--muted);font-size:.92rem;font-weight:500}
+  .nav-links a:hover{color:var(--text);text-decoration:none}
+  .btn{
+    display:inline-flex;align-items:center;gap:.5rem;
+    padding:.55rem 1.15rem;border-radius:999px;font-weight:600;font-size:.92rem;
+    border:1px solid transparent;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease;
+  }
+  .btn-grad{background:var(--grad);color:#04121f}
+  .btn-ghost{border-color:var(--border);color:var(--text);background:var(--panel)}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(56,189,248,.25)}
+  .btn-grad:hover{box-shadow:0 8px 30px rgba(129,140,248,.35)}
+  .nav-cta{display:inline-flex}
+
+  /* hero */
+  header{min-height:calc(100vh - 64px);display:flex;align-items:center;padding:4rem 0}
+  .hero{max-width:760px}
+  .monogram{
+    width:64px;height:64px;border-radius:18px;display:grid;place-items:center;
+    font-family:var(--font-head);font-weight:700;font-size:1.5rem;color:#04121f;
+    background:var(--grad);margin-bottom:1.6rem;box-shadow:0 10px 40px rgba(129,140,248,.35);
+  }
+  .eyebrow{color:var(--cyan);font-weight:600;letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;margin-bottom:.8rem}
+  h1{font-family:var(--font-head);font-size:clamp(2.4rem,6vw,4.2rem);line-height:1.06;letter-spacing:-1.5px;font-weight:700}
+  h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero-sub{color:var(--muted);font-size:1.12rem;max-width:600px;margin:1.4rem 0 2rem}
+  .hero-cta{display:flex;gap:.9rem;flex-wrap:wrap}
+  .chips{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:2.2rem}
+  .chip{font-size:.85rem;color:var(--muted);border:1px solid var(--border);border-radius:999px;padding:.3rem .85rem;background:var(--panel)}
+  .chip b{color:var(--text);font-weight:600}
+  .scroll-hint{position:absolute;bottom:1.6rem;left:50%;transform:translateX(-50%);color:var(--muted);font-size:.85rem;display:flex;flex-direction:column;align-items:center;gap:.3rem}
+  .scroll-hint .line{width:1px;height:38px;background:linear-gradient(var(--muted),transparent)}
+
+  /* sections */
+  section{padding:4.5rem 0}
+  .section-head{display:flex;align-items:baseline;gap:1rem;margin-bottom:2.2rem}
+  .section-num{font-family:var(--font-head);color:var(--cyan);font-weight:600;font-size:.95rem}
+  h2{font-family:var(--font-head);font-size:1.9rem;letter-spacing:-.6px;font-weight:600}
+  .section-line{flex:1;height:1px;background:var(--border)}
+
+  /* stats */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:4rem}
+  .stat{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:1.3rem 1.4rem;transition:transform .2s ease,border-color .2s ease}
+  .stat:hover{transform:translateY(-3px);border-color:rgba(56,189,248,.35)}
+  .stat .num{font-family:var(--font-head);font-size:2rem;font-weight:700;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .stat .lbl{color:var(--muted);font-size:.88rem;margin-top:.2rem}
+
+  /* about */
+  .about p{color:var(--muted);max-width:720px}
+  .about strong{color:var(--text)}
+
+  /* timeline */
+  .timeline{position:relative;padding-left:1.9rem}
+  .timeline::before{content:"";position:absolute;left:6px;top:6px;bottom:6px;width:1px;background:var(--border)}
+  .tl-item{position:relative;margin-bottom:1.4rem}
+  .tl-item::before{
+    content:"";position:absolute;left:-1.9rem;top:.5rem;width:13px;height:13px;border-radius:50%;
+    background:var(--bg);border:3px solid var(--cyan);
+  }
+  .card{
+    background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+    padding:1.4rem 1.5rem;transition:transform .2s ease,background .2s ease,border-color .2s ease;
+  }
+  .card:hover{transform:translateY(-3px);background:var(--panel-hover);border-color:rgba(56,189,248,.3)}
+  .card .role{font-family:var(--font-head);font-size:1.12rem;font-weight:600;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+  .card .role a{color:var(--cyan)}
+  .card .period{font-size:.82rem;color:var(--cyan);border:1px solid rgba(56,189,248,.3);border-radius:999px;padding:.14rem .6rem;white-space:nowrap}
+  .card .sub{color:var(--muted);font-size:.9rem;margin:.25rem 0 .7rem}
+  .card ul{list-style:none}
+  .card ul li{position:relative;padding-left:1.1rem;color:var(--text);font-size:.95rem;margin-bottom:.35rem}
+  .card ul li::before{content:"▹";position:absolute;left:0;color:var(--cyan);font-size:.85rem}
+
+  /* projects grid */
+  .projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.2rem}
+  .p-card{display:flex;flex-direction:column;gap:.8rem;position:relative;overflow:hidden}
+  .p-card::after{
+    content:"";position:absolute;top:0;right:0;width:140px;height:140px;pointer-events:none;
+    background:radial-gradient(circle,rgba(56,189,248,.12),transparent 70%);
+  }
+  .p-icon{font-family:var(--font-head);font-weight:700;color:var(--pink)}
+  .p-card h3{font-family:var(--font-head);font-size:1.1rem;font-weight:600}
+  .p-card p{color:var(--muted);font-size:.93rem;flex:1}
+  .tags{display:flex;flex-wrap:wrap;gap:.4rem}
+  .tags span{font-size:.76rem;color:var(--muted);border:1px solid var(--border);border-radius:999px;padding:.18rem .6rem}
+
+  /* skills */
+  .skill-group{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem}
+  .sk-card h3{font-family:var(--font-head);font-size:1rem;margin-bottom:.9rem;color:var(--cyan)}
+  .pills{display:flex;flex-wrap:wrap;gap:.5rem}
+  .pills span{font-size:.84rem;color:var(--text);border:1px solid var(--border);background:var(--panel);border-radius:999px;padding:.3rem .8rem;transition:border-color .2s ease,color .2s ease}
+  .pills span:hover{border-color:rgba(56,189,248,.5);color:var(--cyan)}
+
+  /* education */
+  .edu{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem}
+  .edu .card h3{font-family:var(--font-head);font-size:1.05rem;font-weight:600;margin-bottom:.3rem}
+  .edu .card .sub{margin-bottom:.2rem}
+
+  /* contact */
+  .contact{
+    text-align:center;border:1px solid var(--border);border-radius:24px;
+    background:linear-gradient(180deg,var(--panel),transparent);padding:3.5rem 1.5rem;
+  }
+  .contact h2{font-size:clamp(1.8rem,4vw,2.6rem)}
+  .contact p{color:var(--muted);max-width:520px;margin:1rem auto 2rem}
+  .contact .hero-cta{justify-content:center}
+
+  footer{border-top:1px solid var(--border);padding:2rem 0;text-align:center;color:var(--muted);font-size:.88rem}
+  footer a{color:var(--muted)}
+  footer a:hover{color:var(--cyan)}
+
+  /* reveal animation */
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.visible{opacity:1;transform:none}
+
+  @media(max-width:640px){
+    .nav-links a:not(.nav-cta){display:none}
+    section{padding:3.5rem 0}
+    .card .role{flex-direction:column;gap:.4rem}
+  }
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .reveal{opacity:1;transform:none;transition:none}
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <h1>Luxolo Ndima</h1>
-    <p class="role">Full Stack Developer (MERN)</p>
-    <p class="meta">Cape Town, South Africa · <a href="mailto:luxolondima41@gmail.com">luxolondima41@gmail.com</a> · 084 328 9893<br>
-    <a href="https://www.linkedin.com/in/luxolo-ndima" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/lux010" target="_blank" rel="noopener">GitHub</a></p>
-  </header>
+<div class="bg-grid"></div>
 
-  <section>
-    <h2>Summary</h2>
-    <p>Full Stack Developer with 4+ years building production web applications in JavaScript/TypeScript (React, Node.js) and SQL databases (MySQL, PostgreSQL, MongoDB). Shipped and maintained enterprise systems — including a high-performance data engine in production at Vodacom — and optimized database queries that cut API response times ~30%. Experienced in containerizing services with Docker, orchestrating deployments on Kubernetes, and running CI/CD-backed workflows across AWS and Azure.</p>
-  </section>
-
-  <section>
-    <h2>Experience</h2>
-    <div class="card">
-      <h3>Intermediate Backend Developer — Jenny Internet</h3>
-      <p class="sub">Cape Town · 2024 – Present</p>
-      <ul>
-        <li>Refactored PHP data access to PDO prepared statements, reducing query risk.</li>
-        <li>Delivered CRUD-heavy backend features connecting frontends to MySQL-driven systems.</li>
-        <li>Maintained and enhanced legacy PHP applications, troubleshooting production database issues.</li>
-      </ul>
+<nav>
+  <div class="wrap inner">
+    <div class="logo">lux<span>.dev</span></div>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact" class="btn btn-grad nav-cta">Hire me</a>
     </div>
-    <div class="card">
-      <h3>Intermediate React Developer — Condorgreen Infotech</h3>
-      <p class="sub">Cape Town · 2021 – 2024</p>
-      <ul>
-        <li>Built RESTful APIs and full-stack React/TypeScript/Node.js applications for enterprise systems.</li>
-        <li>Shipped a high-performance data engine in production at Vodacom, supporting critical data processing and analytics workloads.</li>
-        <li>Improved API response times ~30% by optimizing complex SQL queries (MySQL/PostgreSQL).</li>
-        <li>Implemented BullJS + Redis background task queues for reliable async processing.</li>
-        <li>Containerized services with Docker and deployed on Kubernetes across AWS and Azure.</li>
-        <li>Automated anomaly detection with a cron-based worker service and email alerts.</li>
-        <li>Delivered an in-house employee time-tracking system (ASP.NET MVC, .NET Core, Entity Framework, MySQL) used company-wide.</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>Desktop Support Technician — Cape Peninsula University of Technology</h3>
-      <p class="sub">Cape Town · 2018 – 2019</p>
-      <ul>
-        <li>Supported 200+ staff and students, resolving 15+ tickets per week via ServiceNow and Jira.</li>
-        <li>Imaged and deployed 100+ machines for a lab refresh.</li>
-        <li>Built a Java + MySQL inventory, checkout, and pricing system for the Electrical Engineering component shop.</li>
-      </ul>
-    </div>
-  </section>
-
-  <section>
-    <h2>Projects</h2>
-    <div class="card">
-      <h3>Microservices &amp; Task Automation Platform</h3>
-      <p class="sub">Node.js · Redis · BullJS</p>
-      <ul>
-        <li>Architected Node.js services with async task processing and Redis-backed queues with retry/failure handling.</li>
-        <li>Defined clean API contracts between services.</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>React + Django API Platform</h3>
-      <p class="sub">React · Django REST · Redux Toolkit</p>
-      <ul>
-        <li>React frontend on Django REST APIs with modular state management and lazy-loading optimizations.</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>Data Processing Tool</h3>
-      <p class="sub">Python · Web Scraping · Statistical Modelling</p>
-      <ul>
-        <li>Backend pipelines that scrape and process structured match data with statistical modelling for predictive output.</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>Containerized Deployments</h3>
-      <p class="sub">Docker · Kubernetes · Nginx</p>
-      <ul>
-        <li>Docker images for frontend/backend services with Kubernetes orchestration, Nginx routing, and load balancing.</li>
-      </ul>
-    </div>
-  </section>
-
-  <section>
-    <h2>Skills</h2>
-    <div class="skills">
-      <span>React</span><span>Redux Toolkit</span><span>Next.js</span><span>TypeScript</span><span>JavaScript (ES6+)</span>
-      <span>Tailwind CSS</span><span>HTML5/CSS3</span><span>Node.js</span><span>Express.js</span><span>Python (Flask, Django)</span>
-      <span>PHP (PDO)</span><span>ASP.NET MVC / .NET Core</span><span>Entity Framework</span><span>REST API Design</span>
-      <span>JWT Authentication</span><span>MySQL</span><span>PostgreSQL</span><span>MongoDB</span><span>Query Optimization</span>
-      <span>Docker</span><span>Kubernetes</span><span>CI/CD</span><span>Nginx</span><span>Redis</span><span>AWS</span><span>Azure</span>
-      <span>Git</span><span>BullJS</span><span>Web Scraping</span><span>API Integrations</span><span>Jest</span><span>Postman</span>
-    </div>
-  </section>
-
-  <section>
-    <h2>Education</h2>
-    <div class="card">
-      <ul>
-        <li><strong>Higher Certificate: IT, Systems Development</strong> — CTU Training Solutions (2021 – 2022)</li>
-        <li><strong>Microservices with React and Node.js</strong> — Udemy (2023)</li>
-        <li><strong>Grade 12 (National Senior Certificate)</strong> — Intlanganiso Senior Secondary School (2016)</li>
-      </ul>
-    </div>
-  </section>
-
-  <div class="contact-cta">
-    <p>Available immediately · <a href="mailto:luxolondima41@gmail.com">luxolondima41@gmail.com</a> · 084 328 9893</p>
   </div>
-</div>
+</nav>
+
+<header>
+  <div class="wrap hero">
+    <div class="monogram reveal">LN</div>
+    <p class="eyebrow reveal">Hello, I'm</p>
+    <h1 class="reveal">Luxolo Ndima.<br><span class="grad">I build full-stack<br>web applications.</span></h1>
+    <p class="hero-sub reveal">Full Stack Developer (MERN) with 4+ years shipping production software — from enterprise React/TypeScript/Node.js systems to AI-assisted automation and cloud-native deployments.</p>
+    <div class="hero-cta reveal">
+      <a class="btn btn-grad" href="mailto:luxolondima41@gmail.com">Email me</a>
+      <a class="btn btn-ghost" href="https://www.linkedin.com/in/luxolo-ndima" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn btn-ghost" href="https://github.com/lux010" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <div class="chips reveal">
+      <span class="chip"><b>Cape Town</b>, South Africa</span>
+      <span class="chip">Open to <b>remote</b>, <b>hybrid</b> &amp; <b>on-site</b></span>
+      <span class="chip">Available <b>immediately</b></span>
+    </div>
+    <div class="scroll-hint" aria-hidden="true"><span>scroll</span><span class="line"></span></div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="section-head reveal"><span class="section-num">01</span><h2>About</h2><span class="section-line"></span></div>
+    <div class="stats">
+      <div class="stat reveal"><div class="num">4+</div><div class="lbl">Years building production web apps</div></div>
+      <div class="stat reveal"><div class="num">30%</div><div class="lbl">Faster API responses via SQL optimization</div></div>
+      <div class="stat reveal"><div class="num">1</div><div class="lbl">Data engine shipped in production at Vodacom</div></div>
+      <div class="stat reveal"><div class="num">100+</div><div class="lbl">Machines imaged &amp; deployed (CPUT lab refresh)</div></div>
+    </div>
+    <div class="about">
+      <p class="reveal"><strong>I'm a Full Stack Developer in Cape Town</strong> building software across React, Node.js, TypeScript, and SQL databases. I've shipped and maintained enterprise systems — including a high-performance data engine in production at Vodacom — and cut API response times by ~30% through query optimization.</p>
+      <p class="reveal" style="margin-top:1rem">I containerize services with Docker, orchestrate deployments on Kubernetes, and run CI/CD-backed workflows across AWS and Azure. I work comfortably in Agile cross-functional teams and I'm increasingly focused on AI-integrated systems and automation. I favor the simplest reliable solution over overengineering.</p>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap">
+    <div class="section-head reveal"><span class="section-num">02</span><h2>Experience</h2><span class="section-line"></span></div>
+    <div class="timeline">
+      <div class="tl-item reveal">
+        <div class="card">
+          <div class="role">Intermediate Backend Developer — Jenny Internet <span class="period">2024 – Present</span></div>
+          <p class="sub">Cape Town, South Africa</p>
+          <ul>
+            <li>Refactored PHP data access to PDO prepared statements, reducing query risk and improving safety.</li>
+            <li>Delivered CRUD-heavy backend features connecting frontend interfaces to MySQL-driven systems.</li>
+            <li>Maintained and enhanced legacy PHP applications, troubleshooting production database issues.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="card">
+          <div class="role">Intermediate React Developer — Condorgreen Infotech <span class="period">2021 – 2024</span></div>
+          <p class="sub">Cape Town, South Africa</p>
+          <ul>
+            <li>Built RESTful APIs and full-stack React/TypeScript/Node.js applications for enterprise systems.</li>
+            <li>Shipped a high-performance data engine in production at Vodacom, supporting critical data processing and analytics workloads.</li>
+            <li>Improved API response times ~30% by optimizing complex SQL queries (MySQL/PostgreSQL).</li>
+            <li>Implemented BullJS + Redis background task queues for reliable asynchronous processing.</li>
+            <li>Containerized services with Docker and deployed on Kubernetes across AWS and Azure.</li>
+            <li>Automated anomaly detection with a cron-based worker service and targeted email alerts.</li>
+            <li>Reduced bug rates via Jest unit tests and structured code reviews in Agile sprints.</li>
+            <li>Delivered an in-house time-tracking system (ASP.NET MVC, .NET Core, Entity Framework, MySQL) used company-wide.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="card">
+          <div class="role">Desktop Support Technician — Cape Peninsula University of Technology <span class="period">2018 – 2019</span></div>
+          <p class="sub">Cape Town, South Africa</p>
+          <ul>
+            <li>Supported 200+ staff and students, resolving 15+ tickets per week via ServiceNow and Jira.</li>
+            <li>Imaged and deployed 100+ machines for a lab refresh, minimizing downtime across departments.</li>
+            <li>Built a Java + MySQL inventory, checkout, and pricing system for the Electrical Engineering component shop.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="section-head reveal"><span class="section-num">03</span><h2>Selected Projects</h2><span class="section-line"></span></div>
+    <div class="projects">
+      <div class="card p-card reveal">
+        <span class="p-icon">01</span>
+        <h3>Microservices &amp; Task Automation Platform</h3>
+        <p>Architected Node.js services with asynchronous task processing, Redis-backed queues with retry and failure handling, and clean API contracts between services.</p>
+        <div class="tags"><span>Node.js</span><span>Redis</span><span>BullJS</span></div>
+      </div>
+      <div class="card p-card reveal">
+        <span class="p-icon">02</span>
+        <h3>React + Django API Platform</h3>
+        <p>React frontend on Django REST APIs with modular state management, performance optimizations, and lazy-loading strategies.</p>
+        <div class="tags"><span>React</span><span>Django REST</span><span>Redux Toolkit</span></div>
+      </div>
+      <div class="card p-card reveal">
+        <span class="p-icon">03</span>
+        <h3>Data Processing Tool</h3>
+        <p>Backend pipelines that scrape and process structured match data with statistical modelling for predictive outputs.</p>
+        <div class="tags"><span>Python</span><span>Web Scraping</span><span>Statistical Modelling</span></div>
+      </div>
+      <div class="card p-card reveal">
+        <span class="p-icon">04</span>
+        <h3>Containerized Deployments</h3>
+        <p>Docker images for frontend and backend services, Kubernetes orchestration, and Nginx routing and load balancing.</p>
+        <div class="tags"><span>Docker</span><span>Kubernetes</span><span>Nginx</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="section-head reveal"><span class="section-num">04</span><h2>Skills</h2><span class="section-line"></span></div>
+    <div class="skill-group">
+      <div class="card sk-card reveal">
+        <h3>Frontend</h3>
+        <div class="pills"><span>React</span><span>Redux Toolkit</span><span>Next.js</span><span>TypeScript</span><span>JavaScript (ES6+)</span><span>Tailwind CSS</span><span>HTML5/CSS3</span><span>Responsive UI</span></div>
+      </div>
+      <div class="card sk-card reveal">
+        <h3>Backend</h3>
+        <div class="pills"><span>Node.js</span><span>Express.js</span><span>Python (Flask, Django)</span><span>PHP (PDO)</span><span>ASP.NET MVC / .NET Core</span><span>Entity Framework</span><span>REST API Design</span><span>JWT Authentication</span></div>
+      </div>
+      <div class="card sk-card reveal">
+        <h3>Databases</h3>
+        <div class="pills"><span>MySQL</span><span>PostgreSQL</span><span>MongoDB</span><span>Query Optimization</span><span>Indexing Strategies</span></div>
+      </div>
+      <div class="card sk-card reveal">
+        <h3>Cloud &amp; DevOps</h3>
+        <div class="pills"><span>Docker</span><span>Kubernetes</span><span>CI/CD Pipelines</span><span>Nginx</span><span>Redis</span><span>AWS</span><span>Azure</span><span>Git (GitHub, Bitbucket)</span></div>
+      </div>
+      <div class="card sk-card reveal">
+        <h3>Data &amp; Automation</h3>
+        <div class="pills"><span>BullJS / Redis Queues</span><span>Web Scraping</span><span>API Integrations</span><span>Performance Tuning</span><span>AI Coding Tools</span></div>
+      </div>
+      <div class="card sk-card reveal">
+        <h3>Testing &amp; Tools</h3>
+        <div class="pills"><span>Jest</span><span>Postman</span><span>VS Code</span><span>Figma</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap">
+    <div class="section-head reveal"><span class="section-num">05</span><h2>Education</h2><span class="section-line"></span></div>
+    <div class="edu">
+      <div class="card reveal">
+        <h3>Higher Certificate: IT, Systems Development</h3>
+        <p class="sub">CTU Training Solutions, Cape Town · 2021 – 2022</p>
+      </div>
+      <div class="card reveal">
+        <h3>Microservices with React and Node.js</h3>
+        <p class="sub">Udemy · 2023</p>
+      </div>
+      <div class="card reveal">
+        <h3>National Senior Certificate (Grade 12)</h3>
+        <p class="sub">Intlanganiso Senior Secondary School · 2016</p>
+      </div>
+      <div class="card reveal">
+        <h3>Continuous Learning</h3>
+        <p class="sub">DevOps, AI, and advanced JavaScript frameworks · present</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="contact reveal">
+      <h2>Let's build something together.</h2>
+      <p>I'm currently available for full-time, contract, and freelance opportunities. Remote, hybrid, or on-site in Cape Town.</p>
+      <div class="hero-cta">
+        <a class="btn btn-grad" href="mailto:luxolondima41@gmail.com">Email me</a>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/luxolo-ndima" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn btn-ghost" href="https://github.com/lux010" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>© <span id="year"></span> Luxolo Ndima · <a href="mailto:luxolondima41@gmail.com">luxolondima41@gmail.com</a> · 084 328 9893</p>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
 </body>
 </html>
