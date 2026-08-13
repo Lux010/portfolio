@@ -72,6 +72,27 @@
   @keyframes mq-scroll{to{transform:translateX(-50%)}}
   @media(max-width:640px){.mq-item span{display:none}.mq-item{padding:0 .85rem}}
 
+  /* live github projects */
+  .gh-head{display:flex;align-items:center;gap:.6rem;margin:3rem 0 1.2rem}
+  .gh-head h3{font-family:var(--font-head);font-size:1.05rem;font-weight:600}
+  .gh-live-dot{width:10px;height:10px;border-radius:50%;background:#34d399;box-shadow:0 0 8px rgba(52,211,153,.8);animation:ghpulse 2s infinite}
+  @keyframes ghpulse{50%{opacity:.35}}
+  .gh-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem}
+  .gh-card{display:flex;flex-direction:column;gap:.6rem;padding:1.3rem;animation:ghIn .45s ease both;color:inherit;text-decoration:none;transition:border-color .2s ease,transform .2s ease}
+  .gh-card:hover{border-color:rgba(129,140,248,.5);transform:translateY(-3px)}
+  .gh-card .gh-top{display:flex;align-items:center;justify-content:space-between;gap:.6rem}
+  .gh-card h4{font-family:var(--font-head);font-size:1rem;font-weight:600;color:var(--text)}
+  .gh-card h4 a{color:var(--text)}
+  .gh-card h4 a:hover{color:var(--cyan);text-decoration:none}
+  .gh-card .gh-desc{color:var(--muted);font-size:.86rem;line-height:1.5;flex:1}
+  .gh-card .gh-meta{display:flex;align-items:center;gap:1rem;color:var(--muted);font-size:.78rem;margin-top:.3rem}
+  .gh-card .gh-lang{display:flex;align-items:center;gap:.4rem}
+  .gh-card .gh-lang i{width:9px;height:9px;border-radius:50%;background:#8b949e;display:inline-block}
+  .gh-card .gh-topics{display:flex;flex-wrap:wrap;gap:.4rem}
+  .gh-card .gh-topics span{font-size:.7rem;padding:.18rem .5rem;border:1px solid var(--border);border-radius:20px;color:var(--muted)}
+  .gh-empty,.gh-loading{color:var(--muted);font-size:.9rem}
+  @keyframes ghIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
   /* floating tech logos */
   .bg-floats{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
   .bg-floats img{
@@ -378,6 +399,10 @@
         <div class="tags"><span>Docker</span><span>Kubernetes</span><span>Nginx</span></div>
       </div>
     </div>
+    <div class="gh-head reveal"><span class="gh-live-dot" aria-hidden="true"></span><h3>Live from GitHub</h3></div>
+    <div class="gh-grid" id="ghProjects">
+      <p class="gh-loading">Fetching repositories&hellip;</p>
+    </div>
   </div>
 </section>
 
@@ -518,6 +543,46 @@
     mqTrack.appendChild(buildMqRow());
     mqTrack.appendChild(buildMqRow());
   }
+
+  const ghLangColors = {
+    JavaScript:'#f1e05a', TypeScript:'#3178c6', Python:'#3572A5', PHP:'#4F5D95',
+    'C#':'#178600', Java:'#b07219', 'HTML':'#e34c26', CSS:'#563d7c', Shell:'#89e051',
+    Dockerfile:'#384d54', Ruby:'#701516', Go:'#00ADD8', 'Jupyter Notebook':'#DA5B0B', 'Vue':'#41b883'
+  };
+  const ghGrid = document.getElementById('ghProjects');
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  fetch('https://api.github.com/users/lux010/repos?sort=updated&per_page=6&type=public')
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(repos => {
+      const list = (repos || []).filter(r => !r.fork && r.name.toLowerCase() !== 'portfolio');
+      if (!list.length) {
+        ghGrid.innerHTML = '<p class="gh-empty">No public repositories yet.</p>';
+        return;
+      }
+      ghGrid.innerHTML = '';
+      list.forEach((r, i) => {
+        const card = document.createElement('a');
+        card.className = 'card gh-card';
+        card.href = r.html_url;
+        card.target = '_blank';
+        card.rel = 'noopener';
+        card.style.animationDelay = (i * 80) + 'ms';
+        const topics = (r.topics || []).slice(0, 3).map(t => '<span>' + esc(t) + '</span>').join('');
+        const lang = r.language ? '<span class="gh-lang"><i style="background:' + (ghLangColors[r.language] || '#8b949e') + '"></i>' + esc(r.language) + '</span>' : '';
+        const stars = r.stargazers_count > 0 ? '<span>' + r.stargazers_count + ' &#9733;</span>' : '';
+        const forks = r.forks_count > 0 ? '<span>' + r.forks_count + ' <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor" style="vertical-align:-1px"><path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 8.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Z"/></svg></span>' : '';
+        const updated = '<span>Updated ' + new Date(r.updated_at).toLocaleDateString(undefined, { year:'numeric', month:'short' }) + '</span>';
+        card.innerHTML =
+          '<div class="gh-top"><h4>' + esc(r.name) + '</h4></div>' +
+          '<p class="gh-desc">' + (r.description ? esc(r.description) : 'No description provided.') + '</p>' +
+          (topics ? '<div class="gh-topics">' + topics + '</div>' : '') +
+          '<div class="gh-meta">' + lang + stars + forks + updated + '</div>';
+        ghGrid.appendChild(card);
+      });
+    })
+    .catch(() => {
+      ghGrid.innerHTML = '<p class="gh-empty">Could not load repositories from GitHub right now.</p>';
+    });
 
   const phrases = [
     'I build full-stack web applications.',
