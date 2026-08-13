@@ -105,6 +105,8 @@
   .eyebrow{color:var(--cyan);font-weight:600;letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;margin-bottom:.8rem}
   h1{font-family:var(--font-head);font-size:clamp(2.4rem,6vw,4.2rem);line-height:1.06;letter-spacing:-1.5px;font-weight:700}
   h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .caret{display:inline-block;width:.085em;height:1.05em;background:var(--grad);border-radius:2px;margin-left:4px;vertical-align:-.08em;animation:blink 1.1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
   .hero-sub{color:var(--muted);font-size:1.12rem;max-width:600px;margin:1.4rem 0 2rem}
   .hero-cta{display:flex;gap:.9rem;flex-wrap:wrap}
   .chips{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:2.2rem}
@@ -226,7 +228,7 @@
   <div class="wrap hero">
     <div class="monogram reveal">LN</div>
     <p class="eyebrow reveal">Hello, I'm</p>
-    <h1 class="reveal">Luxolo Ndima.<br><span class="grad">I build full-stack<br>web applications.</span></h1>
+    <h1 class="reveal">Luxolo Ndima.<br><span class="grad"><span class="grad-text">I build full-stack web applications.</span></span><span class="caret" aria-hidden="true"></span></h1>
     <p class="hero-sub reveal">Full Stack Developer (MERN) with 4+ years shipping production software — from enterprise React/TypeScript/Node.js systems to AI-assisted automation and cloud-native deployments.</p>
     <div class="hero-cta reveal">
       <a class="btn btn-grad" href="mailto:luxolondima41@gmail.com">Email me</a>
@@ -416,6 +418,42 @@
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  const phrases = [
+    'I build full-stack web applications.',
+    'I build production SaaS products.',
+    'I build AI-assisted automations.',
+    'I build cloud-native systems.'
+  ];
+  const gradText = document.querySelector('.grad-text');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion) {
+    gradText.textContent = phrases[0];
+  } else {
+    let pi = 0, ci = 0, deleting = false, timer = null;
+    function tick() {
+      const p = phrases[pi];
+      if (!deleting) {
+        ci++;
+        gradText.textContent = p.slice(0, ci);
+        if (ci === p.length) {
+          deleting = true;
+          timer = setTimeout(tick, 1900);
+          return;
+        }
+        timer = setTimeout(tick, 58);
+      } else {
+        ci--;
+        gradText.textContent = p.slice(0, ci);
+        if (ci === 0) {
+          deleting = false;
+          pi = (pi + 1) % phrases.length;
+        }
+        timer = setTimeout(tick, 32);
+      }
+    }
+    tick();
+  }
 
   const floatIcons = [
     'react','redux','nextdotjs','typescript','javascript','tailwindcss','html5',
