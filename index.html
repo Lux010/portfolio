@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luxolo Ndima — Full Stack Developer</title>
+<meta name="description" content="Portfolio of Luxolo Ndima, Full Stack Developer (MERN) in Cape Town, South Africa.">
+<style>
+  :root{
+    --bg:#0f172a; --card:#1e293b; --text:#e2e8f0; --muted:#94a3b8;
+    --accent:#38bdf8; --border:#334155;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+  .wrap{max-width:900px;margin:0 auto;padding:2rem 1.5rem}
+  header{text-align:center;padding:3rem 0 1.5rem;border-bottom:1px solid var(--border)}
+  header h1{font-size:2.2rem;letter-spacing:-.5px}
+  header .role{color:var(--accent);font-weight:600;margin:.3rem 0}
+  header .meta{color:var(--muted);font-size:.95rem}
+  header .meta a{color:var(--accent);text-decoration:none}
+  h2{font-size:1.3rem;margin:2rem 0 1rem;color:var(--accent);border-left:3px solid var(--accent);padding-left:.6rem}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.1rem 1.2rem;margin-bottom:.9rem}
+  .card h3{font-size:1.05rem}
+  .card .sub{color:var(--muted);font-size:.88rem;margin-bottom:.5rem}
+  ul{padding-left:1.2rem;color:var(--text)}
+  ul li{margin-bottom:.25rem}
+  .skills{display:flex;flex-wrap:wrap;gap:.45rem}
+  .skills span{background:#0b1220;border:1px solid var(--border);border-radius:999px;padding:.25rem .7rem;font-size:.85rem}
+  .contact-cta{text-align:center;margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--border);color:var(--muted)}
+  .contact-cta a{color:var(--accent)}
+  @media(max-width:600px){header h1{font-size:1.7rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Luxolo Ndima</h1>
+    <p class="role">Full Stack Developer (MERN)</p>
+    <p class="meta">Cape Town, South Africa · <a href="mailto:luxolondima41@gmail.com">luxolondima41@gmail.com</a> · 084 328 9893<br>
+    <a href="https://www.linkedin.com/in/luxolo-ndima" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/lux010" target="_blank" rel="noopener">GitHub</a></p>
+  </header>
+
+  <section>
+    <h2>Summary</h2>
+    <p>Full Stack Developer with 4+ years building production web applications in JavaScript/TypeScript (React, Node.js) and SQL databases (MySQL, PostgreSQL, MongoDB). Shipped and maintained enterprise systems — including a high-performance data engine in production at Vodacom — and optimized database queries that cut API response times ~30%. Experienced in containerizing services with Docker, orchestrating deployments on Kubernetes, and running CI/CD-backed workflows across AWS and Azure.</p>
+  </section>
+
+  <section>
+    <h2>Experience</h2>
+    <div class="card">
+      <h3>Intermediate Backend Developer — Jenny Internet</h3>
+      <p class="sub">Cape Town · 2024 – Present</p>
+      <ul>
+        <li>Refactored PHP data access to PDO prepared statements, reducing query risk.</li>
+        <li>Delivered CRUD-heavy backend features connecting frontends to MySQL-driven systems.</li>
+        <li>Maintained and enhanced legacy PHP applications, troubleshooting production database issues.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Intermediate React Developer — Condorgreen Infotech</h3>
+      <p class="sub">Cape Town · 2021 – 2024</p>
+      <ul>
+        <li>Built RESTful APIs and full-stack React/TypeScript/Node.js applications for enterprise systems.</li>
+        <li>Shipped a high-performance data engine in production at Vodacom, supporting critical data processing and analytics workloads.</li>
+        <li>Improved API response times ~30% by optimizing complex SQL queries (MySQL/PostgreSQL).</li>
+        <li>Implemented BullJS + Redis background task queues for reliable async processing.</li>
+        <li>Containerized services with Docker and deployed on Kubernetes across AWS and Azure.</li>
+        <li>Automated anomaly detection with a cron-based worker service and email alerts.</li>
+        <li>Delivered an in-house employee time-tracking system (ASP.NET MVC, .NET Core, Entity Framework, MySQL) used company-wide.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Desktop Support Technician — Cape Peninsula University of Technology</h3>
+      <p class="sub">Cape Town · 2018 – 2019</p>
+      <ul>
+        <li>Supported 200+ staff and students, resolving 15+ tickets per week via ServiceNow and Jira.</li>
+        <li>Imaged and deployed 100+ machines for a lab refresh.</li>
+        <li>Built a Java + MySQL inventory, checkout, and pricing system for the Electrical Engineering component shop.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Projects</h2>
+    <div class="card">
+      <h3>Microservices &amp; Task Automation Platform</h3>
+      <p class="sub">Node.js · Redis · BullJS</p>
+      <ul>
+        <li>Architected Node.js services with async task processing and Redis-backed queues with retry/failure handling.</li>
+        <li>Defined clean API contracts between services.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>React + Django API Platform</h3>
+      <p class="sub">React · Django REST · Redux Toolkit</p>
+      <ul>
+        <li>React frontend on Django REST APIs with modular state management and lazy-loading optimizations.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Data Processing Tool</h3>
+      <p class="sub">Python · Web Scraping · Statistical Modelling</p>
+      <ul>
+        <li>Backend pipelines that scrape and process structured match data with statistical modelling for predictive output.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Containerized Deployments</h3>
+      <p class="sub">Docker · Kubernetes · Nginx</p>
+      <ul>
+        <li>Docker images for frontend/backend services with Kubernetes orchestration, Nginx routing, and load balancing.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Skills</h2>
+    <div class="skills">
+      <span>React</span><span>Redux Toolkit</span><span>Next.js</span><span>TypeScript</span><span>JavaScript (ES6+)</span>
+      <span>Tailwind CSS</span><span>HTML5/CSS3</span><span>Node.js</span><span>Express.js</span><span>Python (Flask, Django)</span>
+      <span>PHP (PDO)</span><span>ASP.NET MVC / .NET Core</span><span>Entity Framework</span><span>REST API Design</span>
+      <span>JWT Authentication</span><span>MySQL</span><span>PostgreSQL</span><span>MongoDB</span><span>Query Optimization</span>
+      <span>Docker</span><span>Kubernetes</span><span>CI/CD</span><span>Nginx</span><span>Redis</span><span>AWS</span><span>Azure</span>
+      <span>Git</span><span>BullJS</span><span>Web Scraping</span><span>API Integrations</span><span>Jest</span><span>Postman</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>Education</h2>
+    <div class="card">
+      <ul>
+        <li><strong>Higher Certificate: IT, Systems Development</strong> — CTU Training Solutions (2021 – 2022)</li>
+        <li><strong>Microservices with React and Node.js</strong> — Udemy (2023)</li>
+        <li><strong>Grade 12 (National Senior Certificate)</strong> — Intlanganiso Senior Secondary School (2016)</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="contact-cta">
+    <p>Available immediately · <a href="mailto:luxolondima41@gmail.com">luxolondima41@gmail.com</a> · 084 328 9893</p>
+  </div>
+</div>
+</body>
+</html>
