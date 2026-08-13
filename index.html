@@ -58,6 +58,20 @@
   /* scroll progress */
   .progress-bar{position:fixed;top:0;left:0;height:3px;width:0%;background:var(--grad);z-index:60;border-radius:0 3px 3px 0;box-shadow:0 0 12px rgba(129,140,248,.6)}
 
+  /* marquee tech strip */
+  .marquee{overflow:hidden;position:relative;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(11,18,32,.5)}
+  .marquee::before,.marquee::after{content:"";position:absolute;top:0;bottom:0;width:110px;z-index:2;pointer-events:none}
+  .marquee::before{left:0;background:linear-gradient(90deg,var(--bg),transparent)}
+  .marquee::after{right:0;background:linear-gradient(270deg,var(--bg),transparent)}
+  .marquee-track{display:flex;width:max-content;animation:mq-scroll 40s linear infinite}
+  .marquee:hover .marquee-track{animation-play-state:paused}
+  .marquee-row{display:flex;align-items:center}
+  .mq-item{display:flex;align-items:center;gap:.55rem;padding:0 1.15rem;color:var(--muted);font-size:.9rem;font-weight:500;white-space:nowrap;transition:color .2s ease}
+  .mq-item:hover{color:var(--text)}
+  .mq-item img{width:20px;height:20px}
+  @keyframes mq-scroll{to{transform:translateX(-50%)}}
+  @media(max-width:640px){.mq-item span{display:none}.mq-item{padding:0 .85rem}}
+
   /* floating tech logos */
   .bg-floats{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
   .bg-floats img{
@@ -227,6 +241,7 @@
     .reveal{opacity:1;transform:none;transition:none}
     .bg-floats{display:none}
     .status-dot{animation:none}
+    .marquee-track{animation:none}
   }
 </style>
 </head>
@@ -267,6 +282,10 @@
     <div class="scroll-hint" aria-hidden="true"><span>scroll</span><span class="line"></span></div>
   </div>
 </header>
+
+<div class="marquee" id="techMarquee" aria-hidden="true">
+  <div class="marquee-track"></div>
+</div>
 
 <section id="about">
   <div class="wrap">
@@ -466,6 +485,39 @@
   }
   window.addEventListener('scroll', spy, { passive: true });
   spy();
+
+  const mqIcons = [
+    ['react','61DAFB','React'],['redux','764ABC','Redux'],['nodedotjs','339933','Node.js'],
+    ['express','FFFFFF','Express'],['typescript','3178C6','TypeScript'],['javascript','F7DF1E','JavaScript'],
+    ['nextdotjs','FFFFFF','Next.js'],['tailwindcss','06B6D4','Tailwind'],['html5','E34F26','HTML5'],
+    ['python','3776AB','Python'],['django','44B78B','Django'],['mysql','4479A1','MySQL'],
+    ['postgresql','4169E1','PostgreSQL'],['mongodb','47A248','MongoDB'],['docker','2496ED','Docker'],
+    ['kubernetes','326CE5','Kubernetes'],['redis','FF4438','Redis'],['git','F05032','Git'],
+    ['github','FFFFFF','GitHub'],['jest','C21325','Jest'],['postman','FF6C37','Postman'],['figma','F24E1E','Figma']
+  ];
+  const mqTrack = document.querySelector('#techMarquee .marquee-track');
+  function buildMqRow() {
+    const row = document.createElement('div');
+    row.className = 'marquee-row';
+    for (const [slug, color, name] of mqIcons) {
+      const item = document.createElement('span');
+      item.className = 'mq-item';
+      const img = document.createElement('img');
+      img.src = 'https://cdn.simpleicons.org/' + slug + '/' + color;
+      img.alt = '';
+      img.draggable = false;
+      const label = document.createElement('span');
+      label.textContent = name;
+      item.appendChild(img);
+      item.appendChild(label);
+      row.appendChild(item);
+    }
+    return row;
+  }
+  if (mqTrack) {
+    mqTrack.appendChild(buildMqRow());
+    mqTrack.appendChild(buildMqRow());
+  }
 
   const phrases = [
     'I build full-stack web applications.',
