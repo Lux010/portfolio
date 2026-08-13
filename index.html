@@ -55,6 +55,22 @@
 
   .wrap{max-width:1080px;margin:0 auto;padding:0 1.5rem}
 
+  /* floating tech logos */
+  .bg-floats{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+  .bg-floats img{
+    position:absolute;bottom:-140px;opacity:0;
+    will-change:transform,opacity;
+    filter:drop-shadow(0 0 10px rgba(56,189,248,.18));
+    animation:floatUp var(--dur,55s) linear infinite;
+    animation-delay:var(--delay,0s);
+  }
+  @keyframes floatUp{
+    0%{transform:translateY(0) translateX(0) rotate(0);opacity:0}
+    10%{opacity:var(--o,.1)}
+    85%{opacity:var(--o,.1)}
+    100%{transform:translateY(-130vh) translateX(var(--sway,20px)) rotate(var(--rot,12deg));opacity:0}
+  }
+
   /* nav */
   nav{
     position:sticky;top:0;z-index:50;
@@ -186,6 +202,7 @@
   @media(prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
     .reveal{opacity:1;transform:none;transition:none}
+    .bg-floats{display:none}
   }
 </style>
 </head>
@@ -399,6 +416,39 @@
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  const floatIcons = [
+    'react','redux','nextdotjs','typescript','javascript','tailwindcss','html5',
+    'nodedotjs','express','python','flask','django','php','dotnet','mysql',
+    'postgresql','mongodb','docker','kubernetes','nginx','redis','git','github',
+    'githubactions','jest','postman','figma','openjdk'
+  ];
+  const rnd = (min, max) => Math.random() * (max - min) + min;
+  const floatLayer = document.createElement('div');
+  floatLayer.className = 'bg-floats';
+  floatLayer.setAttribute('aria-hidden', 'true');
+  for (let i = 0; i < 22; i++) {
+    const slug = floatIcons[Math.floor(Math.random() * floatIcons.length)];
+    const img = document.createElement('img');
+    img.src = 'https://cdn.simpleicons.org/' + slug;
+    img.alt = '';
+    img.draggable = false;
+    img.loading = 'lazy';
+    const size = rnd(26, 64);
+    const dur = rnd(38, 85);
+    img.style.cssText =
+      'left:' + rnd(0, 94) + '%;' +
+      'width:' + size + 'px;height:' + size + 'px;' +
+      '--dur:' + dur.toFixed(1) + 's;' +
+      '--delay:' + (-rnd(0, dur)).toFixed(1) + 's;' +
+      '--sway:' + rnd(-40, 40).toFixed(0) + 'px;' +
+      '--rot:' + rnd(-18, 18).toFixed(0) + 'deg;' +
+      '--o:' + rnd(.06, .15).toFixed(2);
+    img.onerror = () => img.remove();
+    floatLayer.appendChild(img);
+  }
+  document.body.prepend(floatLayer);
+
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
