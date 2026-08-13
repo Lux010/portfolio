@@ -84,8 +84,11 @@
   .logo{font-family:var(--font-head);font-weight:700;font-size:1.15rem;letter-spacing:-.3px}
   .logo span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
   .nav-links{display:flex;gap:1.6rem;align-items:center}
-  .nav-links a{color:var(--muted);font-size:.92rem;font-weight:500}
+  .nav-links a{color:var(--muted);font-size:.92rem;font-weight:500;position:relative}
   .nav-links a:hover{color:var(--text);text-decoration:none}
+  .nav-links a:not(.btn)::after{content:"";position:absolute;left:0;bottom:-6px;width:0;height:2px;background:var(--grad);border-radius:2px;transition:width .25s ease}
+  .nav-links a:not(.btn).active{color:var(--text)}
+  .nav-links a:not(.btn).active::after{width:100%}
   .btn{
     display:inline-flex;align-items:center;gap:.5rem;
     padding:.55rem 1.15rem;border-radius:999px;font-weight:600;font-size:.92rem;
@@ -105,12 +108,21 @@
     font-family:var(--font-head);font-weight:700;font-size:1.5rem;color:#04121f;
     background:var(--grad);margin-bottom:1.6rem;box-shadow:0 10px 40px rgba(129,140,248,.35);
   }
+  .status-wrap{position:absolute;right:-4px;bottom:-4px;width:15px;height:15px;outline:none}
   .status-dot{
-    position:absolute;right:-4px;bottom:-4px;width:15px;height:15px;border-radius:50%;
+    position:absolute;inset:0;border-radius:50%;
     background:#34d399;border:3px solid var(--bg);
     box-shadow:0 0 0 0 rgba(52,211,153,.55);animation:pulse 2.2s ease-out infinite;cursor:default;
   }
   @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(52,211,153,.55)}70%{box-shadow:0 0 0 11px rgba(52,211,153,0)}100%{box-shadow:0 0 0 0 rgba(52,211,153,0)}}
+  .status-tip{
+    position:absolute;bottom:calc(100% + 10px);right:-8px;
+    background:#0b1220;border:1px solid rgba(52,211,153,.4);color:#a7f3d0;font-size:.72rem;font-weight:600;
+    padding:.28rem .65rem;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;
+    transform:translateY(3px);transition:opacity .18s ease,transform .18s ease;letter-spacing:.02em;
+  }
+  .status-tip::before{content:"";position:absolute;top:100%;right:12px;border:5px solid transparent;border-top-color:rgba(52,211,153,.4)}
+  .status-wrap:hover .status-tip,.status-wrap:focus-within .status-tip{opacity:1;transform:translateY(0)}
   .eyebrow{color:var(--cyan);font-weight:600;letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;margin-bottom:.8rem}
   h1{font-family:var(--font-head);font-size:clamp(2.4rem,6vw,4.2rem);line-height:1.06;letter-spacing:-1.5px;font-weight:700}
   h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -237,7 +249,7 @@
 
 <header>
   <div class="wrap hero">
-    <div class="monogram reveal">LN<span class="status-dot" title="Open to work" aria-label="Open to work"></span></div>
+    <div class="monogram reveal">LN<span class="status-wrap" tabindex="0"><span class="status-dot" aria-hidden="true"></span><span class="status-tip">Open to work</span></span></div>
     <p class="eyebrow reveal">Hello, I'm</p>
     <h1 class="reveal">Luxolo Ndima.<br><span class="grad"><span class="grad-text">I build full-stack web applications.</span></span><span class="caret" aria-hidden="true"></span></h1>
     <p class="hero-sub reveal">Full Stack Developer (MERN) with 4+ years shipping production software — from enterprise React/TypeScript/Node.js systems to AI-assisted automation and cloud-native deployments.</p>
@@ -437,6 +449,23 @@
   }
   window.addEventListener('scroll', updateProgress, { passive: true });
   updateProgress();
+
+  const spyLinks = [...document.querySelectorAll('.nav-links a:not(.nav-cta)')];
+  const spySections = spyLinks
+    .map(a => document.querySelector(a.getAttribute('href')))
+    .filter(Boolean);
+  function spy() {
+    const cutoff = window.innerHeight * 0.4;
+    let current = spySections[0] ? spySections[0].id : null;
+    for (const s of spySections) {
+      if (s.getBoundingClientRect().top <= cutoff) current = s.id;
+    }
+    for (const a of spyLinks) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    }
+  }
+  window.addEventListener('scroll', spy, { passive: true });
+  spy();
 
   const phrases = [
     'I build full-stack web applications.',
