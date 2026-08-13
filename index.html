@@ -110,6 +110,17 @@
   h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
   .caret{display:inline-block;width:.085em;height:1.05em;background:var(--grad);border-radius:2px;margin-left:4px;vertical-align:-.08em;animation:blink 1.1s steps(1) infinite}
   @keyframes blink{50%{opacity:0}}
+  .status-wrap{position:relative;display:inline-block;margin-left:12px;vertical-align:super;outline:none}
+  .status-dot{display:inline-block;width:13px;height:13px;border-radius:50%;background:#34d399;box-shadow:0 0 0 0 rgba(52,211,153,.55);animation:pulse 2.2s ease-out infinite;cursor:default}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(52,211,153,.55)}70%{box-shadow:0 0 0 12px rgba(52,211,153,0)}100%{box-shadow:0 0 0 0 rgba(52,211,153,0)}}
+  .status-tip{
+    position:absolute;top:calc(100% + 12px);left:50%;transform:translateX(-50%) translateY(-3px);
+    background:#0b1220;border:1px solid rgba(52,211,153,.4);color:#a7f3d0;font-size:.72rem;font-weight:600;
+    padding:.28rem .65rem;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;
+    transition:opacity .18s ease,transform .18s ease;letter-spacing:.02em;
+  }
+  .status-tip::before{content:"";position:absolute;top:-5px;left:50%;transform:translateX(-50%);border:5px solid transparent;border-bottom-color:rgba(52,211,153,.4)}
+  .status-wrap:hover .status-tip,.status-wrap:focus-within .status-tip{opacity:1;transform:translateX(-50%) translateY(0)}
   .hero-sub{color:var(--muted);font-size:1.12rem;max-width:600px;margin:1.4rem 0 2rem}
   .hero-cta{display:flex;gap:.9rem;flex-wrap:wrap}
   .chips{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:2.2rem}
@@ -208,6 +219,7 @@
     html{scroll-behavior:auto}
     .reveal{opacity:1;transform:none;transition:none}
     .bg-floats{display:none}
+    .status-dot{animation:none}
   }
 </style>
 </head>
@@ -232,7 +244,7 @@
   <div class="wrap hero">
     <div class="monogram reveal">LN</div>
     <p class="eyebrow reveal">Hello, I'm</p>
-    <h1 class="reveal">Luxolo Ndima.<br><span class="grad"><span class="grad-text">I build full-stack web applications.</span></span><span class="caret" aria-hidden="true"></span></h1>
+    <h1 class="reveal">Luxolo Ndima.<span class="status-wrap" tabindex="0"><span class="status-dot" aria-hidden="true"></span><span class="status-tip">Open to work</span></span><br><span class="grad"><span class="grad-text">I build full-stack web applications.</span></span><span class="caret" aria-hidden="true"></span></h1>
     <p class="hero-sub reveal">Full Stack Developer (MERN) with 4+ years shipping production software — from enterprise React/TypeScript/Node.js systems to AI-assisted automation and cloud-native deployments.</p>
     <div class="hero-cta reveal">
       <a class="btn btn-grad" href="mailto:luxolondima41@gmail.com">Email me</a>
